@@ -1,0 +1,26 @@
+#!/bin/bash
+workingDir=`pwd`
+filename=`pwd`/$1
+cd ~/executable-jars
+# java -jar link-acessability-validator-1.0-SNAPSHOT-jar-with-dependencies.jar $filename
+
+results=`java -jar link-acessability-validator-1.0-SNAPSHOT-jar-with-dependencies.jar $filename`
+
+revIFS=$IFS
+
+# 按行输出
+IFS=$'\n'
+if [ -n "$results" ]; then
+	# some  invalid url/local-path in markdown
+	for line in $results
+	do
+  		echo $line
+	done
+	
+	exit 1;
+fi
+
+# 恢复分隔符
+IFS=$revIFS
+
+cd $workingDir

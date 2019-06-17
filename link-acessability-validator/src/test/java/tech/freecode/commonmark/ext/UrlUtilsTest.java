@@ -11,6 +11,7 @@ public class UrlUtilsTest {
     @Test
     public void testRelativePath(){
         String[] strs = new String[]{
+                "filename.suffix",
                 "../filename",
                 "../../filename",
                 "../../../filename",
@@ -27,6 +28,12 @@ public class UrlUtilsTest {
         for (String dest : strs){
             assertTrue(UrlUtils.isRelativePath(new Url(dest,null)));
         }
+    }
+
+    @Test
+    public void testZh(){
+        assertTrue(UrlUtils.isRelativePath(Url.of("../不存在/不存在的链接.svg")));
+        assertTrue(UrlUtils.isRelativePath(Url.of("不存在的链接.svg")));
     }
 
 

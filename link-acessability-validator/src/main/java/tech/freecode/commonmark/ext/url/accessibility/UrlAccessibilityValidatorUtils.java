@@ -21,7 +21,7 @@ public class UrlAccessibilityValidatorUtils  {
     }
 
     public static List<UrlAccessibilityValidator.ValidationResult> validate(File file){
-        String filebase = file.getAbsolutePath();
+        String filebase = file.getParent();
 
         UrlAccessibilityValidatorUtils utils = new UrlAccessibilityValidatorUtils();
         utils

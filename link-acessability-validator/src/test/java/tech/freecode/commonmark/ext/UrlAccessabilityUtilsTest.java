@@ -13,11 +13,13 @@ import static org.junit.Assert.*;
 public class UrlAccessabilityUtilsTest {
     @Test
     public void test() throws IOException {
-        File file = new File("/tmp/markdown.md");
+        File file = new File("/tmp/marrkdown/markdown.md");
+        file.getParentFile().mkdir();
         file.createNewFile();
         String markdown = "# Markdown\n" +
                 "\n" +
-                "[本地文件](../localfile.tmp);\n";
+                "[本地文件](../localfile.tmp);\n" +
+                "[本地文件](localfile.tmp)\n";
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write(markdown);
         fileWriter.close();
@@ -28,8 +30,9 @@ public class UrlAccessabilityUtilsTest {
         List<UrlAccessibilityValidator.ValidationResult> results =
                 UrlAccessibilityValidatorUtils.validate(file);
 
-        assertEquals(1,results.size());
+        assertEquals(2,results.size());
         assertEquals(UrlAccessibilityValidator.ValidationResult.Status.OK,results.get(0).getStatus());
+        assertEquals(UrlAccessibilityValidator.ValidationResult.Status.FAIL,results.get(1).getStatus());
 
 
         file.delete();

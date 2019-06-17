@@ -29,12 +29,15 @@ public class UrlUtils {
 
 
 
+    // \w 能不能匹配汉字要取决于系统设置；
+    // 这样不安全
+    // 显式匹配汉字
     public static boolean isRelativePath(Url url){
         String filename = url.getDestination();
         String relative_path_regex = "(\\.\\.\\/)*"  // 表示父目录的可以出现或者多次连续出现0次
                 + "(\\.\\/)?"         // ./ 表示当前目录的,可以至多可以一次
-                +  "(\\w[\\w | \\_ | \\- | \\.]*\\/)*"        // 路径 以字母开头,之后可以包含特殊字符 _ - .
-                +  "\\w[\\w | \\_ | \\- | \\.]*" ;          // filename;
+                +  "([\\w | \\u4e00-\\u9fa5]+[\\w | \\_ | \\- | \\. | \\u4e00-\\u9fa5]*\\/)*"        // 路径 以字母开头,之后可以包含特殊字符 _ - .
+                +  "[\\w | \\u4e00-\\u9fa5]+[\\w | \\_ | \\- | \\. | \\u4e00-\\u9fa5]*" ;          // filename;
 
         Pattern relative_path_pattern = Pattern.compile(relative_path_regex);
 

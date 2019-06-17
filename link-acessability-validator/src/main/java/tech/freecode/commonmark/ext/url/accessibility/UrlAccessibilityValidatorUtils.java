@@ -14,22 +14,23 @@ import java.util.List;
 
 public class UrlAccessibilityValidatorUtils  {
 
-    private String filebase;
-
     private List<UrlAccessibilityValidator> validators = new ArrayList<>();
-    public UrlAccessibilityValidatorUtils(String filebase) {
-        this.filebase = filebase;
-
-        validators.add(new EmailAccessabilityValidator());
-        validators.add(new AbosultePathAccessabilityValidator());
-        validators.add(new RelativePathValidator(filebase,new LinuxLocalFile()));
-        validators.add(new ExternalUrlAccessabilityValidator());
-
+    public UrlAccessibilityValidatorUtils addValidator(UrlAccessibilityValidator validator){
+        validators.add(validator);
+        return this;
     }
 
-    public List<UrlAccessibilityValidator.ValidationResult> validate(File file){
-        ArrayList<UrlAccessibilityValidator.ValidationResult> validationResults = new ArrayList<>();
+    public static List<UrlAccessibilityValidator.ValidationResult> validate(File file){
+        String filebase = file.getAbsolutePath();
 
+        UrlAccessibilityValidatorUtils utils = new UrlAccessibilityValidatorUtils();
+        utils
+                .addValidator(new EmailAccessabilityValidator())
+                .addValidator(new AbosultePathAccessabilityValidator())
+                .addValidator(new RelativePathValidator(filebase,new LinuxLocalFile()))
+                .addValidator(new ExternalUrlAccessabilityValidator());
+
+        ArrayList<UrlAccessibilityValidator.ValidationResult> validationResults = new ArrayList<>();
         if (!file.exists() || !file.canRead()){
             // 如果文件不存在 或者不可读
             return validationResults;
@@ -44,11 +45,11 @@ public class UrlAccessibilityValidatorUtils  {
             return validationResults;
         }
 
-        return validate(markdown);
+        return utils.validate(markdown);
     }
 
 
-    public List<UrlAccessibilityValidator.ValidationResult> validate(String markdown){
+    private List<UrlAccessibilityValidator.ValidationResult> validate(String markdown){
         ArrayList<UrlAccessibilityValidator.ValidationResult> validationResults = new ArrayList<>();
 
         List<Extension> extensions = new ArrayList<>();
@@ -82,7 +83,6 @@ public class UrlAccessibilityValidatorUtils  {
     }
 
     private List<UrlAccessibilityValidator.ValidationResult> validateLinks(Node document){
-
 
         LinkVisitor linkVisitor = new LinkVisitor();
         document.accept(linkVisitor);

@@ -10,6 +10,7 @@
     <modules>
         <module>link-acessability-validator</module>
         <module>catalog-generator</module>
+        <module>comment</module>
     </modules>
 
     <packaging>pom</packaging>

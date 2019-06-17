@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>link-acessability-validator</module>
+        <module>catalog-generator</module>
     </modules>
 
     <packaging>pom</packaging>

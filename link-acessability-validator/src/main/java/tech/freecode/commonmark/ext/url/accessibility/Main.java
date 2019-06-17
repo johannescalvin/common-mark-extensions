@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String filename = "/home/calvin/data/test/test.md";
+        String filename = args[0];
         List<RelativePathValidator.ValidationResult> results =
                 UrlAccessibilityValidatorUtils.validate(new File(filename));
         for (UrlAccessibilityValidator.ValidationResult result : results){
